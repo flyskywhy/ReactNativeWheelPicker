@@ -109,34 +109,38 @@ export default class TimePicker extends React.Component<Props, State> {
 
   onHourSelected = (position: number) => {
     this.setState({selectedHourIndex: position})
-    const { selectedDate, hours } = this.state
-    const selectedHour = hours[position]
+    const selectedDate = new Date(this.state.selectedDate)
+    const selectedHour = this.state.hours[position]
 
     if (this.props.format24) {
       selectedDate.setHours(Number(selectedHour))
+      this.setState({selectedDate})
     } else {
       const time12format = hourTo12Format(selectedDate.getHours())
       const newTime12Format = `${selectedHour} ${time12format[1]}`
       const selectedHour24format = hourTo24Format(newTime12Format)
       selectedDate.setHours(selectedHour24format)
+      this.setState({selectedDate})
     }
     this.onTimeSelected(selectedDate)
   }
 
   onMinuteSelected = (position: number) => {
     this.setState({selectedMinuteIndex: position})
-    const selectedDate = this.state.selectedDate
+    const selectedDate = new Date(this.state.selectedDate)
     selectedDate.setMinutes(Number(this.state.minutes[position]))
+    this.setState({selectedDate})
     this.onTimeSelected(selectedDate)
   }
 
   onAmSelected = (position: number) => {
     this.setState({selectedAmIndex: position})
-    const selectedDate = this.state.selectedDate
+    const selectedDate = new Date(this.state.selectedDate)
     const time12format = hourTo12Format(selectedDate.getHours())
     const newTime12Format = `${time12format[0]} ${getAmArray()[position]}`
     const selectedHour24format = hourTo24Format(newTime12Format)
     selectedDate.setHours(selectedHour24format)
+    this.setState({selectedDate})
     this.onTimeSelected(selectedDate)
   }
 
